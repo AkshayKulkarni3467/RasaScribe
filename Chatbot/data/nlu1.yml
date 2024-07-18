@@ -1,0 +1,12 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - hello
+    - generative ai and langchain
+- intent: has_idea
+  examples: |
+    - yes
+- intent: platform
+  examples: |
+    - i will post it on [yt]{"entity": "platform", "value": "YouTube"}

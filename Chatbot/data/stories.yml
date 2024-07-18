@@ -1,0 +1,20 @@
+version: "3.1"
+
+stories:
+
+- story: happy path where user has idea
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_idea
+
+- story: happy path where user doesnt have idea
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_idea
+  - intent: doesnt_have_idea
+  - action: action_set_idea
+  - slot_was_set: 
+    - idea: false
+  - action: utter_console

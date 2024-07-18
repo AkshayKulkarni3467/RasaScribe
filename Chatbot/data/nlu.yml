@@ -1,0 +1,121 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+- intent: doesnt_have_idea
+  examples: |
+    - no i dont
+    - no
+    - i dont have an idea
+    - n
+    - I don't think so
+    - no way
+    - not really
+    - i dont have a topic
+    - no i dont have a topic
+
+- intent: has_idea
+  examples: |
+    - yes i have an idea
+    - yes i have a topic
+    - i have a topic
+    - y
+    - indeed
+    - of course
+    - i think i have an idea
+    - correct
+
+- intent: platform
+  examples: |
+    - im going to post on [LinkedIn](platform)
+    - maybe [youtube](platform)
+    - i am going to [tweet](platform)
+    - i will post it on [tiktok](platform)
+    - I think [instagram](platform)
+    - Im thinking of [yt](platform)
+    - I am going to post on [yt shorts](platform)
+    - I will upload it on [facebook](platform)
+    - [Twitter](platform)
+    - [insta](platform)
+    - i will post it on [shorts](platform)
+    - [fb](platform)
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+
+- synonym: LinkedIn
+  examples: |
+    - linkedin
+    - Linked In
+    - linked In
+
+- synonym: YouTube
+  examples: |
+    - youtube
+    - yt
+    - YT
+    - Youtube
+    - youtub
+    - utube
+
+- synonym: Twitter
+  examples: |
+    - tweet
+    - twitter
+    - twiter
+
+- synonym: TikTok
+  examples: |
+    - tiktok
+    - Tik tok
+
+- synonym: Instagram
+  examples: |
+    - insta
+    - insta gram
+    - gram
+    - Instagram
+
+- synonym: Shorts
+  examples: |
+    - yt shorts
+    - ytshorts
+    - shorts
+    - shots
+  
+- synonym: FaceBook
+  examples: |
+    - fb
+    - facebook
+    - face book
