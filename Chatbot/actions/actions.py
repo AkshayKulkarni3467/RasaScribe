@@ -1,8 +1,8 @@
 from typing import Any, Text, Dict, List
-
+import datetime
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet,ReminderScheduled, ReminderCancelled
 
 
 
@@ -74,9 +74,6 @@ class ActionInputFormSubmit(Action):
         topic = tracker.get_slot("topic")
         platform = tracker.get_slot("platform")
         
-        text = '''Your topic is : {}\n-------------------------\nYour platform is : {}'''.format(topic,platform)
-
-        dispatcher.utter_message(text=text)
         return []
 
 class AskSelectedNum(Action):
@@ -157,11 +154,119 @@ class ActionGeminiAPI(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        flag = tracker.get_slot('idea')
+        
+        if flag == True:
+            text = '''Your topic is : {}\n-------------------------\nYour platform is : {}'''.format(tracker.get_slot('topic'),tracker.get_slot('platform'))
+        if flag == False:
+            text = '''Your domain is {}\n-------------------------\nYour platform is : {}'''.format(tracker.get_slot('domain'),tracker.get_slot('platform'))
+            
+        dispatcher.utter_message(text=text)
 
         #----------------------------------------------------------------
         dispatcher.utter_message(text=self.get_gemini_response(tracker))
         #----------------------------------------------------------------
         
-        dispatcher.utter_message(text="Do you want to set a reminder to upload your post?")
+        dispatcher.utter_message(text="Do you want me to remind you to post after some specified amount of time?")
         
         return []
+    
+    
+class ActionSetReminder(Action):
+    """Schedules a reminder, supplied with the last message's entities."""
+    
+    @staticmethod
+    def get_time(tracker):
+        return int(10)
+
+    def name(self) -> Text:
+        return "action_set_reminder"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        
+        #----------------------------------------------------------------
+        time = self.get_time(tracker)
+        #----------------------------------------------------------------
+        
+        
+        dispatcher.utter_message("I will remind you in {} seconds.".format(time))
+
+        date = datetime.datetime.now() + datetime.timedelta(seconds=time)
+        entities = tracker.latest_message.get("entities")
+
+        reminder = ReminderScheduled(
+            "EXTERNAL_reminder",
+            trigger_date_time=date,
+            entities=entities,
+            name="my_reminder",
+            kill_on_user_message=False,
+        )
+
+        return [reminder]
+
+
+class ActionReactToReminder(Action):
+    """Reminds the user to call someone."""
+
+    def name(self) -> Text:
+        return "action_react_to_reminder"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(f"Remember to post your content!")
+
+        return []
+    
+class ForgetReminders(Action):
+    """Cancels all reminders."""
+
+    def name(self) -> Text:
+        return "action_forget_reminders"
+
+    async def run(
+        self, dispatcher, tracker: Tracker, domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message("Okay, I'll cancel all your reminders.")
+
+        # Cancel all reminders
+        return [ReminderCancelled()]
+    
+class ActionThank(Action):
+    """Appereciate the user for using the bot."""
+    
+    def name(self) -> Text:
+        return "action_thank"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message('Thank you for using RasaScribe!')
+        
+class ActionCleanMemory(Action):
+    """Flush out all the slots."""
+    
+    def name(self) -> Text:
+        return "action_clean_memory"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        return [SlotSet('domain',None),SlotSet('topic_list',None),SlotSet('idea',None),SlotSet('selected_num',None),SlotSet('platform',None),SlotSet('topic',None)]

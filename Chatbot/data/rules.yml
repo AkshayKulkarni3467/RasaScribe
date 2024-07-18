@@ -59,5 +59,25 @@ rules:
     - action: request_form
     - active_loop: request_form
 
-    
+- rule: called reminder
+  steps:
+  - intent: ask_remind_post
+  - action: action_set_reminder
+  - action: action_thank
+  - action: action_clean_memory
 
+- rule: didnt call reminder
+  steps:
+  - intent: ask_remind_not_post
+  - action: action_thank
+  - action: action_clean_memory
+
+- rule: react to reminder
+  steps:
+  - intent: EXTERNAL_reminder
+  - action: action_react_to_reminder
+
+- rule: forget reminder
+  steps:
+  - intent: ask_forget_reminders
+  - action: action_forget_reminders

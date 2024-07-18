@@ -72,6 +72,11 @@ intents:
   - platform
   - likes_idea
   - doesnt_like_idea
+  - ask_remind_post
+  - ask_remind_not_post
+  - EXTERNAL_reminder
+  - ask_forget_reminders
+
 
 responses:
   utter_greet:
@@ -111,6 +116,11 @@ actions:
   - action_input_form_submit
   - action_ask_selected_num
   - action_request_form_submit
+  - action_set_reminder
+  - action_react_to_reminder
+  - action_forget_reminders
+  - action_thank
+  - action_clean_memory
 
 session_config:
   session_expiration_time: 60

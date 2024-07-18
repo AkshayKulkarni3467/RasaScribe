@@ -52,6 +52,7 @@ nlu:
     - of course
     - i think i have an idea
     - correct
+    - yes i do
 
 - intent: likes_idea
   examples: |
@@ -93,6 +94,40 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: ask_remind_post
+  examples: |
+    - yes set me a timer
+    - set me a reminder
+    - i would love to have a reminder
+    - set me a reminder for 10 mins
+    - a timer of 20 secs
+    - seconds
+    - minutes
+    - mins
+    - secs
+    - hrs
+    - a reminder for 1 hour
+    - yes remind me
+
+- intent: ask_remind_not_post
+  examples: |
+    - dont set me a reminder
+    - no i dont need a reminder
+    - no need of a timer
+    - no im good i dont need a reminder
+    - thanks for asking but i dont require a reminder
+
+- intent: ask_forget_reminders
+  examples: |
+    - forget about it
+    - don't remind me!
+    - Forget about the reminder
+    - do not remind me
+    - cancel the reminder
+    - cancel all reminders please
+    - Forget reminding me
+    - Forget reminding me!
 
 - synonym: LinkedIn
   examples: |
