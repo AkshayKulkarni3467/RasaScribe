@@ -8,13 +8,11 @@ stories:
   - action: utter_greet
   - action: utter_idea
 
-- story: happy path where user doesnt have idea
+- story: likes the provided idea
   steps:
-  - intent: greet
-  - action: utter_greet
-  - action: utter_idea
-  - intent: doesnt_have_idea
-  - action: action_set_idea
-  - slot_was_set: 
-    - idea: false
-  - action: utter_console
+  - intent: likes_idea
+  - action: utter_ask_platform
+  - intent: platform
+  - slot_was_set:
+    - platform: true
+  - action: action_gemini_api

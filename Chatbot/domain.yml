@@ -26,11 +26,41 @@ slots:
     - type: from_entity
       entity: platform
 
+  domain:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: request_form
+        requested_slot: domain
+
+  topic_list:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+
+  selected_num:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: request_form
+        requested_slot: selected_num
+
+
 forms:
   input_form:
     required_slots:
       - topic
       - platform
+
+  request_form:
+    required_slots:
+      - domain
+      - selected_num
 
 
 intents:
@@ -40,6 +70,8 @@ intents:
   - doesnt_have_idea
   - bot_challenge
   - platform
+  - likes_idea
+  - doesnt_like_idea
 
 responses:
   utter_greet:
@@ -66,9 +98,19 @@ responses:
   utter_ask_platform:
   - text: "Which platform are you going to post it on?"
 
+  utter_ask_domain:
+  - text: "Which domain would you like the content to be based on?"
+
+  utter_preference_domain:
+  - text: "Would you like topics from same domain or different domain?"
+
 actions:
   - action_set_idea
-  - action_submit
+  - action_gemini_api
+  - action_reset_slots
+  - action_input_form_submit
+  - action_ask_selected_num
+  - action_request_form_submit
 
 session_config:
   session_expiration_time: 60

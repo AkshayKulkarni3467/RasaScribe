@@ -46,11 +46,31 @@ nlu:
     - yes i have an idea
     - yes i have a topic
     - i have a topic
+    - yes
     - y
     - indeed
     - of course
     - i think i have an idea
     - correct
+
+- intent: likes_idea
+  examples: |
+    - i love these topics
+    - yea i like them
+    - i like them
+    - yes i like the topics
+    - yes the topics are pretty good
+    - these topics are great!
+
+- intent: doesnt_like_idea
+  examples: |
+    - no i dont like those topics
+    - search for me some different topics
+    - give me some different topics please
+    - I would prefer something different
+    - suggest me something different
+    - suggest me different topics
+
 
 - intent: platform
   examples: |

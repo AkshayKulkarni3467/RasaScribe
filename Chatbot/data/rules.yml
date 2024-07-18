@@ -12,7 +12,7 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: Activate form
+- rule: Activate input form
   steps:
   - intent: has_idea
   - action: action_set_idea
@@ -21,7 +21,7 @@ rules:
   - action: input_form
   - active_loop: input_form
 
-- rule: Submit form
+- rule: Submit input form
   condition:
     - active_loop: input_form
   steps:
@@ -29,4 +29,35 @@ rules:
     - active_loop: null
     - slot_was_set:
         - requested_slot: null
-    - action: action_submit
+    - action: action_input_form_submit
+    - action: action_gemini_api
+
+- rule: Activate request form
+  steps:
+    - intent: doesnt_have_idea
+    - action: action_set_idea
+    - slot_was_set: 
+      - idea: false
+    - action: utter_console
+    - action: request_form
+    - active_loop: request_form
+
+- rule: Submit request form
+  condition:
+    - active_loop: request_form
+  steps:
+    - action: request_form
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null
+    - action: action_request_form_submit
+
+- rule: Doesnt like idea
+  steps: 
+    - intent: doesnt_like_idea
+    - action: action_reset_slots
+    - action: request_form
+    - active_loop: request_form
+
+    
+
