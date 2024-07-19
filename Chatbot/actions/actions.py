@@ -100,7 +100,7 @@ class AskSelectedNum(Action):
         #----------------------------------------------------------------
         
         dispatcher.utter_message(text=
-                                 '''{}\n-------------\nWhich topic would you like to choose?'''.format(topic_list))
+                                 '''{}\n-------------\nWhich topic would you like to choose? 🤔💭'''.format(topic_list))
 
         return [SlotSet('topic_list',topic_list)]
 
@@ -140,7 +140,7 @@ class ActionRequestFormSubmit(Action):
         selected_num = tracker.get_slot("selected_num")
         
         text = '''
-                Your list for the domain {} is :\n{}\n-------------------------\nYour selection : {}\n-------------------------\nDo you like these topics or should I search for something different?'''.format(domain,topic_list,selected_num)
+                Your list for the domain {} is :\n{}\n-------------------------\nYour selection : {}\n-------------------------\nContinue with the selected domain and topic or do you want to choose another domain? 🔎'''.format(domain,topic_list,selected_num)
 
         dispatcher.utter_message(text=text)
         return []
@@ -221,7 +221,7 @@ class ActionGeminiAPI(Action):
         dispatcher.utter_message(text=output_text)
         #----------------------------------------------------------------
         
-        dispatcher.utter_message(text="Do you want me to remind you to post after some specified amount of time?")
+        dispatcher.utter_message(text="Do you want me to remind you to post after some specified amount of time? ⏰")
         
         return []
     
@@ -231,7 +231,34 @@ class ActionSetReminder(Action):
     
     @staticmethod
     def get_time(tracker):
-        return int(10)
+        api_key = os.getenv("GOOGLE_API_KEY")
+        genai.configure(api_key=api_key)
+        
+        model = genai.GenerativeModel(
+            'gemini-1.5-flash',
+            generation_config={"response_mime_type": "application/json"},
+            )
+        time = tracker.latest_message['text']
+        
+        prompt = f'''
+            You measure any give time in hours, minutes and seconds.
+            Remove the time provided in this {time} string and convert it into hours, minutes and seconds.
+            If no time is provided in the string, return 1 minute
+            write the time in the following json schema
+            Content = {{"hours": str, "minutes": str, "seconds":str}}
+            Return a Content object'''
+            
+        response = model.generate_content(prompt)
+        
+        output = json.loads(response.text)
+        
+        hours = output['hours']
+        minutes = output['minutes']
+        seconds = output['seconds']
+        
+        time_in_sec = (int(hours)*60*60)+(int(minutes)*60)+(int(seconds))
+        
+        return hours,minutes,seconds,time_in_sec
 
     def name(self) -> Text:
         return "action_set_reminder"
@@ -243,14 +270,11 @@ class ActionSetReminder(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
         
-        #----------------------------------------------------------------
-        time = self.get_time(tracker)
-        #----------------------------------------------------------------
+        hours,minutes,seconds,time_in_sec = self.get_time(tracker=tracker)        
         
-        
-        dispatcher.utter_message("I will remind you in {} seconds.".format(time))
+        dispatcher.utter_message("Timer set for: {} hrs {} mins {} sec".format(hours,minutes,seconds))
 
-        date = datetime.datetime.now() + datetime.timedelta(seconds=time)
+        date = datetime.datetime.now() + datetime.timedelta(seconds=time_in_sec)
         entities = tracker.latest_message.get("entities")
 
         reminder = ReminderScheduled(
@@ -277,7 +301,7 @@ class ActionReactToReminder(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(f"Remember to post your content!")
+        dispatcher.utter_message(f"🚨 Remember to post your content! 🚨")
 
         return []
     
@@ -308,7 +332,7 @@ class ActionThank(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message('Thank you for using RasaScribe!')
+        dispatcher.utter_message('Thank you for using RasaScribe! 🌟✍️')
         
 class ActionCleanMemory(Action):
     """Flush out all the slots."""
