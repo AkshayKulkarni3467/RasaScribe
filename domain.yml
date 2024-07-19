@@ -1,0 +1,127 @@
+version: "3.1"
+
+entities:
+  - platform
+
+slots:
+  idea:
+    type: bool
+    influence_conversation: true
+    mappings:
+    - type: custom
+
+  topic:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: input_form
+        requested_slot: topic
+
+  platform:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: platform
+
+  domain:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: request_form
+        requested_slot: domain
+
+  topic_list:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+
+  selected_num:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: request_form
+        requested_slot: selected_num
+
+
+forms:
+  input_form:
+    required_slots:
+      - topic
+      - platform
+
+  request_form:
+    required_slots:
+      - domain
+      - selected_num
+
+
+intents:
+  - greet
+  - goodbye
+  - has_idea
+  - doesnt_have_idea
+  - bot_challenge
+  - platform
+  - likes_idea
+  - doesnt_like_idea
+  - ask_remind_post
+  - ask_remind_not_post
+  - EXTERNAL_reminder
+  - ask_forget_reminders
+
+
+responses:
+  utter_greet:
+  - text: '''Hello!👋 Welcome to RasaScribe, your go-to assistant for generating engaging scripts, captivating captions, and trendy hashtags!📜✨ 
+             Whether you are crafting content for social media, marketing campaigns, or any creative project, I am here to help. 
+             Just let me know what you need, and I will get started right away!🎬📝📱'''
+  
+  utter_idea:
+  - text: "Do you have a topic for your content? 📝"
+
+  utter_console:
+  - text: "No worries if you don't have a topic, Let me search the web for some trending topics ✨"
+
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_ask_topic:
+  - text: "Please enter your topic below"
+
+  utter_ask_platform:
+  - text: "Which platform are you going to post it on?"
+
+  utter_ask_domain:
+  - text: "Which domain would you like the content to be based on?"
+
+  utter_preference_domain:
+  - text: "Would you like topics from same domain or different domain?"
+
+actions:
+  - action_set_idea
+  - action_gemini_api
+  - action_reset_slots
+  - action_input_form_submit
+  - action_ask_selected_num
+  - action_request_form_submit
+  - action_set_reminder
+  - action_react_to_reminder
+  - action_forget_reminders
+  - action_thank
+  - action_clean_memory
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

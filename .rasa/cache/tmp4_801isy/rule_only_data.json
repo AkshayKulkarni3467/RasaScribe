@@ -1,0 +1,10 @@
+{
+  "rule_only_slots": [
+    "platform",
+    "idea"
+  ],
+  "rule_only_loops": [
+    "request_form",
+    "input_form"
+  ]
+}

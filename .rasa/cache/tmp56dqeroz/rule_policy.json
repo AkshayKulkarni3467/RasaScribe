@@ -1,0 +1,65 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_like_topic\"}}]": "request_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_like_topic\"}}, {\"active_loop\": {\"name\": \"request_form\"}, \"prev_action\": {\"action_name\": \"request_form\"}, \"user\": {\"intent\": \"doesnt_like_topic\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"has_idea\"}}]": "action_set_idea",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"has_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 1.0]}, \"user\": {\"intent\": \"has_idea\"}}]": "input_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"has_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 1.0]}, \"user\": {\"intent\": \"has_idea\"}}, {\"active_loop\": {\"name\": \"input_form\"}, \"prev_action\": {\"action_name\": \"input_form\"}, \"slots\": {\"idea\": [1.0, 1.0]}, \"user\": {\"intent\": \"has_idea\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]": "utter_goodbye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]": "action_listen",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"input_form\"}}]": "action_input_form_submit",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"input_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_input_form_submit\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]": "action_set_idea",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]": "utter_console",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"utter_console\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]": "request_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"utter_console\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"active_loop\": {\"name\": \"request_form\"}, \"prev_action\": {\"action_name\": \"request_form\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]": "action_listen",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_gemini_api\"}, \"slots\": {\"platform\": [1.0]}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}]": "utter_iamabot",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}, {\"prev_action\": {\"action_name\": \"utter_iamabot\"}, \"user\": {\"intent\": \"bot_challenge\"}}]": "action_listen",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"request_form\"}}]": "action_request_form_submit",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"request_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_request_form_submit\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"likes_topic\"}}]": "utter_ask_platform",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"likes_topic\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_platform\"}, \"user\": {\"intent\": \"likes_topic\"}}]": "action_listen"
+    },
+    "rule_only_slots": [
+      "platform",
+      "idea"
+    ],
+    "rule_only_loops": [
+      "request_form",
+      "input_form"
+    ],
+    "rules_for_loop_unhappy_path": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"request_form\"}, \"prev_action\": {\"action_name\": \"request_form\"}, \"user\": {\"intent\": \"doesnt_like_topic\"}}]": "do_not_predict_loop_action",
+      "[{\"prev_action\": {\"action_name\": \"action_set_idea\"}}, {\"active_loop\": {\"name\": \"input_form\"}, \"prev_action\": {\"action_name\": \"input_form\"}, \"slots\": {\"idea\": [1.0, 1.0]}, \"user\": {\"intent\": \"has_idea\"}}]": "do_not_predict_loop_action",
+      "[{\"prev_action\": {\"action_name\": \"utter_console\"}}, {\"active_loop\": {\"name\": \"request_form\"}, \"prev_action\": {\"action_name\": \"request_form\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]": "do_not_predict_loop_action"
+    },
+    "rules_not_in_stories": [
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"likes_topic\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "handling active loops and forms - input_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}, {\"prev_action\": {\"action_name\": \"utter_console\"}, \"slots\": {\"idea\": [1.0, 0.0]}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}]",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_gemini_api\"}, \"slots\": {\"platform\": [1.0]}}]",
+      "predicting default action with intent session_start",
+      "predicting default action with intent restart",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"has_idea\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_like_topic\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"doesnt_have_idea\"}}]",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"input_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_input_form_submit\"}}]",
+      "handling active loops and forms - request_form - action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"has_idea\"}}, {\"prev_action\": {\"action_name\": \"action_set_idea\"}, \"slots\": {\"idea\": [1.0, 1.0]}, \"user\": {\"intent\": \"has_idea\"}}]",
+      "predicting default action with intent back",
+      "handling active loops and forms - input_form - action_listen",
+      "handling active loops and forms - request_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"likes_topic\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_platform\"}, \"user\": {\"intent\": \"likes_topic\"}}]",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"request_form\"}}]",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"request_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_request_form_submit\"}}]",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"input_form\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}, {\"prev_action\": {\"action_name\": \"utter_iamabot\"}, \"user\": {\"intent\": \"bot_challenge\"}}]"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: Activate input form
+  steps:
+  - intent: has_idea
+  - action: action_set_idea
+  - slot_was_set:
+    - idea : true
+  - action: input_form
+  - active_loop: input_form
+
+- rule: Submit input form
+  condition:
+    - active_loop: input_form
+  steps:
+    - action: input_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: action_input_form_submit
+    - action: action_gemini_api
+
+- rule: Activate request form
+  steps:
+    - intent: doesnt_have_idea
+    - action: action_set_idea
+    - slot_was_set: 
+      - idea: false
+    - action: utter_console
+    - action: request_form
+    - active_loop: request_form
+
+- rule: Submit request form
+  condition:
+    - active_loop: request_form
+  steps:
+    - action: request_form
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null
+    - action: action_request_form_submit
+
+- rule: Doesnt like idea
+  steps: 
+    - intent: doesnt_like_idea
+    - action: action_reset_slots
+    - action: request_form
+    - active_loop: request_form
+
+- rule: called reminder
+  steps:
+  - intent: ask_remind_post
+  - action: action_set_reminder
+  - action: action_clean_memory
+  - action: action_thank
+
+- rule: didnt call reminder
+  steps:
+  - intent: ask_remind_not_post
+  - action: action_clean_memory
+  - action: action_thank
+
+- rule: react to reminder
+  steps:
+  - intent: EXTERNAL_reminder
+  - action: action_react_to_reminder
+
+- rule: forget reminder
+  steps:
+  - intent: ask_forget_reminders
+  - action: action_forget_reminders

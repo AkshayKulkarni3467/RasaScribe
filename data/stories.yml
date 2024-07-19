@@ -1,0 +1,18 @@
+version: "3.1"
+
+stories:
+
+- story: happy path where user has idea
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_idea
+
+- story: likes the provided idea
+  steps:
+  - intent: likes_idea
+  - action: utter_ask_platform
+  - intent: platform
+  - slot_was_set:
+    - platform: true
+  - action: action_gemini_api

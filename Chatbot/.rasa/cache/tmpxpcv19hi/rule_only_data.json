@@ -1,9 +1,0 @@
-{
-  "rule_only_slots": [
-    "idea"
-  ],
-  "rule_only_loops": [
-    "request_form",
-    "input_form"
-  ]
-}

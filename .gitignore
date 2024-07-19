@@ -1,2 +1,2 @@
-Chatbot/*.env
-Chatbot/models/
+*.env
+models/
