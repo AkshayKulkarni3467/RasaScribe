@@ -3,6 +3,9 @@ import datetime
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet,ReminderScheduled, ReminderCancelled
+import os
+import google.generativeai as genai
+import json
 
 
 
@@ -146,7 +149,49 @@ class ActionGeminiAPI(Action):
     
     @staticmethod
     def get_gemini_response(tracker):
-        return "Running gemini api"
+        if tracker.get_slot('idea') == True:
+            api_key = os.getenv("GOOGLE_API_KEY")
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel(
+            'gemini-1.5-flash',
+            generation_config={"response_mime_type": "application/json"},
+            )
+            topic = tracker.get_slot('topic')
+            platform = tracker.get_slot('platform')
+            
+            prompt =f'''
+                You are a freelance script writer for social media.You generate scripts, captions and hashtags. 
+                You are currently making a post on {topic} 
+                which is going to be posted on {platform}
+                Remember to start every post with a question!
+                Use numbers as points, not *, keep only one space distance between a point and next letter.
+                Dont use ** to bold the texts, since not every platform converts them to bold
+                You should not include any visual, voiceover or variable elements in the script, captions and hashtags! You are a script writer and you should output the entire post completed!
+                If the platform is linkedin, twitter, etc, make the content formal and use formal emojis.
+                For linkedin posts generate a post with some jargons and technical details based on the topic.
+                For twitter posts, make sure that the post length is less than 60 words.
+                For script:
+                If the platform is youtube generate a script which can hold upto 5 minutes of video and dont divide the script into points.
+                If the platform is instagram, tiktok or shorts generate a script which can hold upto 30 seconds video, divide the script into points and keep the scripts informal and try to develop engaging content and use more emojis than formal content.
+                For instagram, tiktok and shorts, generate a catchy response.
+                Make the script size depending on the platform.
+                For caption:
+                Dont generate hashtags in captions!
+                For hashtags:
+                Generate atleast 10 hashtags related to the topic
+                Remember to not seperate the text and just output them on new lines
+                Using this JSON schema:
+                Content = {{"script": str, "caption": str, "hashtags": str}}
+                Return a Content object'''
+
+            response = model.generate_content(prompt)
+            
+            output = json.loads(response.text)
+        
+        elif tracker.get_slot('idea') == False:
+            output = 'running gemini api'
+            
+        return output
 
     def name(self) -> Text:
         return "action_gemini_api"
@@ -163,9 +208,17 @@ class ActionGeminiAPI(Action):
             text = '''Your domain is {}\n-------------------------\nYour platform is : {}'''.format(tracker.get_slot('domain'),tracker.get_slot('platform'))
             
         dispatcher.utter_message(text=text)
+        
+        output = self.get_gemini_response(tracker)
+        
+        output_script = output['script']
+        output_caption = output['caption']
+        output_hashtags = output['hashtags']
+        
+        output_text = '''Script: \n{}\n-------------------------\nCaptions: \n{}\n-------------------------\nHashtags: \n{}'''.format(output_script,output_caption,output_hashtags)
 
         #----------------------------------------------------------------
-        dispatcher.utter_message(text=self.get_gemini_response(tracker))
+        dispatcher.utter_message(text=output_text)
         #----------------------------------------------------------------
         
         dispatcher.utter_message(text="Do you want me to remind you to post after some specified amount of time?")
