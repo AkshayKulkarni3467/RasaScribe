@@ -120,7 +120,6 @@ actions:
   - action_react_to_reminder
   - action_forget_reminders
   - action_thank
-  - action_clean_memory
 
 session_config:
   session_expiration_time: 60

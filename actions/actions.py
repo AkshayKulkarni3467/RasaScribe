@@ -10,6 +10,8 @@ from datetime import date
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
+import mysql.connector
+import time
 
 
 
@@ -151,7 +153,7 @@ class AskSelectedNum(Action):
         return object['domain']
     
     def get_yt_video_ids(self,response,no_of_years):
-        youtube_id_list = [i['id']['videoId'] for i in response['items'] if self.check_publication(i['snippet']['publishedAt'].split('T')[0],no_of_years) and i['id']['kind'] != 'youtube#playlist']
+        youtube_id_list = [i['id']['videoId'] for i in response['items'] if self.check_publication(i['snippet']['publishedAt'].split('T')[0],no_of_years) and 'videoId' in i['id'].keys()]
         return youtube_id_list[:5]
     
     
@@ -188,6 +190,7 @@ class AskSelectedNum(Action):
         
         for i,j in enumerate(output.keys()):
             dispatcher.utter_message('''Topic {} : \n{}'''.format(i+1,output.get(j)))
+            time.sleep(2)
         
         return chat,response.text
     
@@ -484,18 +487,30 @@ class ActionThank(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        
         dispatcher.utter_message('Thank you for using RasaScribe! 🌟✍️')
         
-class ActionCleanMemory(Action):
-    """Flush out all the slots."""
-    
-    def name(self) -> Text:
-        return "action_clean_memory"
-
-    async def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict[Text, Any]]:
-        return [SlotSet('domain',None),SlotSet('topic_list',None),SlotSet('idea',None),SlotSet('selected_num',None),SlotSet('platform',None),SlotSet('topic',None)]
+        conn = mysql.connector.connect(host='localhost', password=os.getenv('SQL_PW'),user='root')
+        cursor = conn.cursor()
+        cursor.execute('use rasascribe;')
+        
+        create_table = '''CREATE TABLE if not exists User (
+              id INT PRIMARY KEY auto_increment,
+              has_idea varchar(10),
+              topic varchar(255),
+              platform varchar(100),
+              domain varchar(100),
+              topic_list varchar(3000),
+              text_of_selected_num varchar(500)
+            );'''
+        cursor.execute(create_table)
+        
+        insert_into_table = '''INSERT INTO User (has_idea, topic, platform, domain,topic_list,text_of_selected_num)
+            values (%s, %s, %s, %s, %s, %s)'''
+        values = [str(tracker.get_slot('idea')),tracker.get_slot('topic'),tracker.get_slot('platform'),tracker.get_slot('domain'),tracker.get_slot('topic_list'),tracker.get_slot('selected_num')]
+        cursor.execute(insert_into_table,values)
+        conn.commit()
+        conn.close()
+        
+        return []
+        

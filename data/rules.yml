@@ -63,19 +63,19 @@ rules:
   steps:
   - intent: ask_remind_post
   - action: action_set_reminder
-  - action: action_clean_memory
   - action: action_thank
 
 - rule: didnt call reminder
   steps:
   - intent: ask_remind_not_post
-  - action: action_clean_memory
   - action: action_thank
+  - action: action_restart
 
 - rule: react to reminder
   steps:
   - intent: EXTERNAL_reminder
   - action: action_react_to_reminder
+  - action: action_restart
 
 - rule: forget reminder
   steps:
