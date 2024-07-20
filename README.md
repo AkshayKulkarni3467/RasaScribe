@@ -8,7 +8,29 @@ In their own words:
 
 >💬 Rasa is an open source (Python) machine learning framework to automate text- and voice-based conversations: NLU, dialogue management, connect to Slack, Facebook, and more - Create chatbots and voice assistants
 
+<br/><br/>
+
 ## 📝 Why RasaScribe?
+
+- RasaScribe works out of the box. It has the ability to generate latest trending topics in any domain.
+- Is a closed-form chatbot and there's no problem of hallucination since it works mostly on NLU.
+- A quick-to-use tool, where just entering three keywords generates an entire scipt.
+- Can generate captions and hashtags depending on the platform you are using.
+- Extracts the information the users have entered, which can then be used to retrain the rasa chatbot.
+
+<br/>
+
+## 🤓☝️ How does it work?
+
+- Uses NLU to understand if you have an idea for your post or not.
+- If you dont have an idea, it uses top treading youtube videos in your specified domain.
+- It scrapes the transcripts and passes it to Gemini API
+- This API returns the scripts, captions and hashtags considering your specified platform.
+- Here's a flowchart of how RasaScribe works :
+
+<br/>
+
+## 🎬 Demo Video
 
 # 🧑‍💻 Installation
 1. Clone the repository:
