@@ -1,0 +1,4 @@
+rasa==3.6.1
+mysql-connector-python==9.0.0
+youtube-transcript-api==0.6.2
+google-generativeai
