@@ -1,6 +1,16 @@
 # 📚 Overview
 
-## 🧑‍💻 Installation
+💬 RasaScribe is the go-to script generating chatbot platform built on top of [Rasa](https://github.com/RasaHQ/rasa) and Gemini API. It provides you with scripts, captions and hashtags of any topic that you wish. If you dont have any specific topics, no worries! The chatbot will search the web for all the trending topics for your specified domain! 👀
+
+## 📖 What is Rasa?
+
+In their own words:
+
+>💬 Rasa is an open source (Python) machine learning framework to automate text- and voice-based conversations: NLU, dialogue management, connect to Slack, Facebook, and more - Create chatbots and voice assistants
+
+## 📝 Why RasaScribe?
+
+# 🧑‍💻 Installation
 1. Clone the repository:
     ```sh
     git clone https://github.com/AkshayKulkarni3467/RasaScribe.git
@@ -14,7 +24,7 @@
     pip install -r requirements.txt
     ```
 
-## ✨ Quick Start
+# ✨ Quick Start
 1. Get a gemini api key and set it as an environment variable with name 'GOOGLE_API_KEY' 
 2. Get a youtube data v3 api key and set it as an environment variable with name 'YOUTUBE_API_KEY'
 3. Replace `os.getenv['SQL_PW']` with your local database password in actions.py 
@@ -31,24 +41,41 @@
     rasa run
     ```
 
-## Contributing
+## ✏️ Tuning for retriving proper topics
+
+In the actions.py file, you can modify the following parameters to generate better results
+
+1. Modify the no of years parameter (Checks if the searched result is published after the specified no of years):
+    ```python
+    response = self.get_yt_video_ids(response,no_of_years=3)
+    ```
+2. Modify the max results to generated more context for a give topic:
+    ```python
+    response = self.youtube_search(query_string,maxResults=25)
+    ```
+3. Modify the indexs slicing to generate a much longet transcript:
+    ```python
+    return youtube_id_list[:5]
+    ```
+
+## 🌟 Contributing
 1. Fork the repository.
 2. Create a new branch: `git checkout -b feature-branch`
 3. Make your changes and commit them: `git commit -m 'Add some feature'`
 4. Push to the branch: `git push origin feature-branch`
 5. Open a pull request.
 
-## Future Plans
+## 🔎 Future Plans
 - Adding audio suggestions for short form videos content.
 - Adding a functionality of two stage fallback.
 - Adding a functionality of posting image links and generating script based on that image.
 
-## License
+## 📜 License
 This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgements
+## 🛠️ Acknowledgements
 - Inspired by the hype of gen ai to come out and develop my own tools.
 - Special thanks to the contributors and the open-source community.
 
-## Contact
+## 📞 Contact
 For more information, visit the [Project](https://github.com/AkshayKulkarni3467/RasaScribe).
