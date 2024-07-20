@@ -34,6 +34,10 @@ In their own words:
 
 ## 🎬 Demo Video
 
+https://github.com/user-attachments/assets/bacd448c-6047-4ab9-854a-abe8c9a5fc0c
+
+<br/>
+
 # 🧑‍💻 Installation
 1. Clone the repository:
     ```sh
