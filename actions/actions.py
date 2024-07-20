@@ -117,7 +117,6 @@ class AskSelectedNum(Action):
         check_time = datetime.datetime.now() - datetime.timedelta(days=365*no_of_years)
         return check_time.date() < published_time
     
-    
     @staticmethod
     def get_script(list_video_ids):
         script_1 = ''
@@ -151,17 +150,33 @@ class AskSelectedNum(Action):
         
         object = json.loads(response.text)
         return object['domain']
+
     
     def get_yt_video_ids(self,response,no_of_years):
         youtube_id_list = [i['id']['videoId'] for i in response['items'] if self.check_publication(i['snippet']['publishedAt'].split('T')[0],no_of_years) and 'videoId' in i['id'].keys()]
+
+#---------------------------------------------------------------- Change the index slicing to generate a much longer transcript
+
         return youtube_id_list[:5]
     
-    
+#----------------------------------------------------------------
+        
     def get_topic_list(self,domain,dispatcher):
         
         query_string = 'trending in {}'.format(domain)
+
+#----------------------------------------------------------------- Change max results to retrive more context for the script
+
         response = self.youtube_search(query_string,maxResults=25)
+        
+#-----------------------------------------------------------------        
+
+    
+#---------------------------------------------------------------- Change the number of years for the script to include past events 
+    
         response = self.get_yt_video_ids(response,no_of_years=3)
+    
+#----------------------------------------------------------------
         script = self.get_script(response)
         
         api_key = os.getenv("GOOGLE_API_KEY")
