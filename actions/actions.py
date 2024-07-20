@@ -202,11 +202,9 @@ class AskSelectedNum(Action):
 
         domain = tracker.get_slot('domain')
         
-        #----------------------------------------------------------------
         extracted_domain = self.get_domain(domain)
         
         chat,response = self.get_topic_list(domain=extracted_domain,dispatcher=dispatcher)
-        #----------------------------------------------------------------
         
         dispatcher.utter_message(text='''Which topic would you like to choose? 🤔💭''')
 
@@ -372,9 +370,7 @@ class ActionGeminiAPI(Action):
         
         output_text = '''Script: \n{}\n-------------------------\nCaptions: \n{}\n-------------------------\nHashtags: \n{}'''.format(output_script,output_caption,output_hashtags)
 
-        #----------------------------------------------------------------
         dispatcher.utter_message(text=output_text)
-        #----------------------------------------------------------------
         
         dispatcher.utter_message(text="Do you want me to remind you to post after some specified amount of time? ⏰")
         
