@@ -28,6 +28,8 @@ In their own words:
 - This API returns the scripts, captions and hashtags considering your specified platform.
 - Here's a flowchart of how RasaScribe works :
 
+![final contentGenerator](https://github.com/user-attachments/assets/423759b8-e6ea-4f2e-8a03-ca87b0b6cf6e)
+
 <br/>
 
 ## 🎬 Demo Video
